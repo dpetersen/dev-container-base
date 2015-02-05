@@ -1,4 +1,5 @@
 FROM ubuntu:latest
+MAINTAINER Don Petersen <don@donpetersen.net>
 
 # Install a few dependencies
 RUN apt-get update && \
