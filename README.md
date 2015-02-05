@@ -28,6 +28,7 @@ Building:
 ```bash
 docker build .
 ```
+*Did you update something that won't trigger a Dockerfile change, like push to your vimfiles? Use the `--no-cache` flag.*
 
 Tagging:
 ```bash
