@@ -3,7 +3,7 @@ MAINTAINER Don Petersen <don@donpetersen.net>
 
 # Install a few dependencies
 RUN apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-client vim git
+  DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-client vim git build-essential
 
 # Set up for pairing with wemux
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tmux
@@ -36,6 +36,8 @@ RUN chsh -s /usr/bin/zsh root
 # Install a couple of helpful utilities
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ack-grep
 RUN gem install git-duet --no-rdoc --no-ri
+ADD https://github.com/zimbatm/direnv/releases/download/v2.5.0/direnv.linux-amd64 /usr/local/bin/direnv
+RUN chmod 755 /usr/local/bin/direnv
 
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
