@@ -4,19 +4,16 @@ A container with my basic dev tools running on Ubuntu. It does not have any lang
 
 ## Usage
 
-The container exposes SSH, but using a password that is completely insecure and also in the source of the Dockerfile. I'll, uh, deal with that later. The point is, you shouldn't make this container's SSH server reachable from the outside world.
+The container exposes SSH and drops the authorized_keys file from the repository into the container. That's great for me, not so much for you. Unless you're me, or one of the other authorized persons in that file. Or if you've stolen their private key!
+
+The point is, you can make the exposed SSH port accessible to the outside world and log in by having the correct key.
 
 I start it like so:
 ```bash
-docker run -d -p 127.0.0.1:31981:22 dpetersen/dev-container-base:latest
+docker run -d -p 0.0.0.0:31981:22 dpetersen/dev-container-base:latest
 ```
 
 *You'll probably want to add some volume mounts to that command, so that your code isn't cloned inside of the container and potentially lost!*
-
-And then access it by first SSHing to the Docker host, and then running something like:
-```bash
-ssh -A -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" -o "PasswordAuthentication yes" root@localhost -p 31981
-```
 
 Step 3, profit.
 
