@@ -5,8 +5,13 @@ MAINTAINER Don Petersen <don@donpetersen.net>
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-client vim git build-essential
 
-# Set up for pairing with wemux
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tmux
+# My tmux plugins (which make my config less insane) require tmux 1.9, so....
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python-software-properties software-properties-common && \
+  add-apt-repository -y ppa:pi-rho/dev && \
+  apt-get update && \
+  apt-get install -y tmux=1.9a-1~ppa1~t
+
+# Set up for pairing with wemux. 
 RUN sudo git clone git://github.com/zolrath/wemux.git /usr/local/share/wemux && \
   sudo ln -s /usr/local/share/wemux/wemux /usr/local/bin/wemux && \
   sudo cp /usr/local/share/wemux/wemux.conf.example /usr/local/etc/wemux.conf && \
