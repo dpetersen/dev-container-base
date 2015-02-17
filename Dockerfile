@@ -3,7 +3,7 @@ MAINTAINER Don Petersen <don@donpetersen.net>
 
 # Install a few dependencies
 RUN apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-client vim git build-essential
+  DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-client vim git build-essential ctags
 
 # My tmux plugins (which make my config less insane) require tmux 1.9, so....
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python-software-properties software-properties-common && \
@@ -44,6 +44,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server && \
   echo "AllowAgentForwarding yes" >> /etc/ssh/sshd_config
 ADD authorized_keys /root/.ssh/authorized_keys
 RUN chmod 600 /root/.ssh/authorized_keys
+
+# Fix for occasional errors in perl stuff (git, ack) saying that locale vars
+# aren't set.
+RUN locale-gen en_US en_US.UTF-8 && dpkg-reconfigure locales
 
 # Expose the SSH port, and run the SSH server by default when this image is
 # daemonized.
