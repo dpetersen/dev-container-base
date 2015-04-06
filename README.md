@@ -52,6 +52,8 @@ Tagging:
 docker tag <YOUR SHA HERE> dpetersen/dev-container-base:v1
 ```
 
+*Don't forget to tag `latest`! It's a manual process, not magic!*
+
 Pushing:
 ```bash
 docker push dpetersen/dev-container-base
