@@ -11,7 +11,7 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
     apt-get update &&\
 
 # Basic dev tools
-    apt-get install -y openssh-client git build-essential vim ctags &&\
+    apt-get install -y openssh-client git build-essential vim ctags man curl &&\
 
 # My tmux plugins (which make my config less insane) require tmux 1.9, so....
     apt-get install -y python-software-properties software-properties-common &&\
