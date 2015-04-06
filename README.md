@@ -41,20 +41,23 @@ And everything is magically handled for you! You may have to configure your SSH 
 
 Since I build images roughly once per year, I need to remind myself how to do it. A few Top Tips below:
 
-Building:
+#### Building
+
 ```bash
 docker build .
 ```
 *Did you update something that won't trigger a Dockerfile change, like push to your vimfiles? Use the `--no-cache` flag.*
 
-Tagging:
+#### Tagging
+
 ```bash
 docker tag <YOUR SHA HERE> dpetersen/dev-container-base:v1
 ```
 
 *Don't forget to tag `latest`! It's a manual process, not magic!*
 
-Pushing:
+#### Pushing
+
 ```bash
 docker push dpetersen/dev-container-base
 ```
