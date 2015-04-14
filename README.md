@@ -27,6 +27,11 @@ Host devbox
   Port <YOUR MAPPED SSH PORT FROM ABOVE>
   User root
   ForwardAgent true
+# Feel free to leave this out if you find it unsafe. I tear down
+# my dev box frequently and am sick of the warnings about the 
+# changed host.
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
 ```
 
 And now can:
