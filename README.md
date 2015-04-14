@@ -15,7 +15,7 @@ docker run -d -p 0.0.0.0:12345:22 dpetersen/dev-container-base:latest
 
 *You'll probably want to add some volume mounts to that command, so that your code isn't cloned inside of the container and potentially lost!*
 
-Step 3, profit.
+Step 3: profit.
 
 ## Connecting
 
