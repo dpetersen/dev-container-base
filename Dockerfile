@@ -26,9 +26,11 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
     cp /usr/local/share/wemux/wemux.conf.example /usr/local/etc/wemux.conf &&\
     echo "host_list=(root)" >> /usr/local/etc/wemux.conf &&\
 
-# Set up The Editor of the Gods
+# Install Homesick, through which zsh and vim configurations will be installed
     apt-get install -y ruby &&\
     gem install homesick --no-rdoc --no-ri &&\
+
+# Set up The Editor of the Gods
     homesick clone dpetersen/vimfiles &&\
     homesick symlink vimfiles &&\
     
