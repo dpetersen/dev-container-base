@@ -3,7 +3,7 @@ MAINTAINER Don Petersen <don@donpetersen.net>
 
 # Direnv install
 ADD https://github.com/zimbatm/direnv/releases/download/v2.5.0/direnv.linux-amd64 /usr/local/bin/direnv
-ADD authorized_keys /root/.ssh/authorized_keys
+ADD ssh_key_adder.rb /root/ssh_key_adder.rb
 
 # Start by changing the apt output, as stolen from Discourse's Dockerfiles.
 RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
@@ -30,6 +30,10 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
     apt-get install -y ruby &&\
     gem install homesick --no-rdoc --no-ri &&\
 
+# Install the Github Auth gem, which will be used to get SSH keys from GitHub
+# to authorize users for SSH
+    gem install github-auth --no-rdoc --no-ri &&\
+
 # Set up The Editor of the Gods
     homesick clone dpetersen/vimfiles &&\
     homesick symlink vimfiles &&\
@@ -45,20 +49,19 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
     gem install git-duet --no-rdoc --no-ri &&\
     chmod 755 /usr/local/bin/direnv &&\
 
-# Set up SSH. We copy in some known good keys (not exactly helping the
-# reusability of this image, but greatly helping me get up and running
-# quickly...), and setting up SSH forwarding so that transactions like git
-# pushes from the container happen magically.
+# Set up SSH. We set up SSH forwarding so that transactions like git pushes
+# from the container happen magically.
     apt-get install -y openssh-server &&\
     mkdir /var/run/sshd &&\
     echo "AllowAgentForwarding yes" >> /etc/ssh/sshd_config &&\
-    chmod 600 /root/.ssh/authorized_keys &&\
 
 # Fix for occasional errors in perl stuff (git, ack) saying that locale vars
 # aren't set.
     locale-gen en_US en_US.UTF-8 && dpkg-reconfigure locales
 
-# Expose the SSH port, and run the SSH server by default when this image is
-# daemonized.
+# Expose SSH
 EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+
+# Install the SSH keys of ENV-configured GitHub users before running the SSH
+# server process. See README for SSH instructions.
+CMD /root/ssh_key_adder.rb && /usr/sbin/sshd -D
