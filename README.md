@@ -4,14 +4,14 @@ A container with my basic dev tools running on Ubuntu. It does not have any lang
 
 ## Starting
 
-The container exposes SSH and drops the authorized_keys file from the repository into the container. That's great for me, not so much for you. Unless you're me, or one of the other authorized persons in that file. Or if you've stolen their private key!
-
-The point is, you can make the exposed SSH port accessible to the outside world and log in by having the correct key.
+The container exposes SSH and uses [GitHub's public key API](https://developer.github.com/v3/users/keys/) to add the keys for authorized users to `~/.ssh/authorized_keys`. You must specify all of the allowed GitHub usernames as the `AUTHORIZED_GH_USERS` environment variable during `docker run`. Here's an example:
 
 I start it like so:
 ```bash
-docker run -d -p 0.0.0.0:12345:22 dpetersen/dev-container-base:latest
+docker run -d -e AUTHORIZED_GH_USERS="dpetersen,otherperson" -p 0.0.0.0:12345:22 dpetersen/dev-container-base:latest
 ```
+
+If the GitHub API is down or the user doesn't exist / has no keys, you'll get an error.
 
 *You'll probably want to add some volume mounts to that command, so that your code isn't cloned inside of the container and potentially lost!*
 
