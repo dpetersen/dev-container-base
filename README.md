@@ -1,6 +1,7 @@
 # dev-container-base
 
 [![Docker Hub](https://img.shields.io/badge/docker-ready-blue.svg)](https://registry.hub.docker.com/u/dpetersen/dev-container-base/)
+[![](https://badge.imagelayers.io/dpetersen/dev-container-base.svg)](https://imagelayers.io/?images=dpetersen/dev-container-base:latest 'Get your own badge on imagelayers.io')
 
 A container with my basic dev tools running on Ubuntu. It does not have any languages or their specific tools installed. This could be used as a base image for developing in a specific language.
 
