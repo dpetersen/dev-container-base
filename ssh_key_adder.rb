@@ -3,8 +3,8 @@
 ENV_KEY = "AUTHORIZED_GH_USERS"
 
 begin
-  `mkdir /root/.ssh`
-  `touch /root/.ssh/authorized_keys`
+  `mkdir /home/dev/.ssh`
+  `touch /home/dev/.ssh/authorized_keys`
   ENV[ENV_KEY].split(",").map(&:strip).each do |username|
     output = `gh-auth add --users=#{username}`
     if output.include?("Adding 0 key")
