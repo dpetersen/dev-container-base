@@ -3,15 +3,18 @@
 [![Docker Hub](https://img.shields.io/badge/docker-ready-blue.svg)](https://registry.hub.docker.com/u/dpetersen/dev-container-base/)
 [![](https://badge.imagelayers.io/dpetersen/dev-container-base.svg)](https://imagelayers.io/?images=dpetersen/dev-container-base:latest 'Get your own badge on imagelayers.io')
 
-A container with my basic dev tools running on Ubuntu. It does not have any languages or their specific tools installed. This could be used as a base image for developing in a specific language.
+A container with my basic dev tools running on Ubuntu. It does not have any languages or their specific tools installed. This could be used as a base image for developing in a specific language. Access is via SSH with the account `dev`, which has sudo.
 
 ## Starting
 
-The container exposes SSH and uses [GitHub's public key API](https://developer.github.com/v3/users/keys/) to add the keys for authorized users to `~/.ssh/authorized_keys`. You must specify all of the allowed GitHub usernames as the `AUTHORIZED_GH_USERS` environment variable during `docker run`. Here's an example:
+The container exposes SSH and uses [GitHub's public key API](https://developer.github.com/v3/users/keys/) to add the keys for authorized users to `~/.ssh/authorized_keys` for the `dev` account. You must specify all of the allowed GitHub usernames as the `AUTHORIZED_GH_USERS` environment variable during `docker run`. Here's an example:
 
 I start it like so:
 ```bash
-docker run -d -e AUTHORIZED_GH_USERS="dpetersen,otherperson" -p 0.0.0.0:12345:22 dpetersen/dev-container-base:latest
+docker run -d \
+  -e AUTHORIZED_GH_USERS="dpetersen,otherperson" \
+  -p 0.0.0.0:31981:22 \
+  dpetersen/dev-container-base:latest
 ```
 
 If the GitHub API is down or the user doesn't exist / has no keys, you'll get an error.
@@ -28,7 +31,7 @@ You have the running container, and now it's time to pair. Except you keep forge
 Host devbox
   HostName <YOUR IP OR HOSTNAME>
   Port <YOUR MAPPED SSH PORT FROM ABOVE>
-  User root
+  User dev
   ForwardAgent true
 # Feel free to leave this out if you find it unsafe. I tear down
 # my dev box frequently and am sick of the warnings about the 
