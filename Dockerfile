@@ -7,7 +7,7 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
     apt-get update &&\
 
 # Basic dev tools
-    apt-get install -y sudo openssh-client git build-essential vim ctags man curl direnv &&\
+    apt-get install -y sudo openssh-client git build-essential vim ctags man curl direnv software-properties-common &&\
 
 # Set up for pairing with wemux.
     apt-get install -y tmux &&\
@@ -15,6 +15,11 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
     ln -s /usr/local/share/wemux/wemux /usr/local/bin/wemux &&\
     cp /usr/local/share/wemux/wemux.conf.example /usr/local/etc/wemux.conf &&\
     echo "host_list=(dev)" >> /usr/local/etc/wemux.conf &&\
+
+# Install neovim
+    add-apt-repository ppa:neovim-ppa/unstable &&\
+    apt-get update &&\
+    apt-get install neovim &&\
 
 # Install Homesick, through which zsh and vim configurations will be installed
     apt-get install -y ruby &&\
@@ -56,7 +61,13 @@ RUN \
 
 # Set up The Editor of the Gods
     homesick clone dpetersen/vimfiles &&\
-    homesick symlink vimfiles
+    homesick symlink vimfiles &&\
+    cd ~/.vim/bundle_storage/vimproc.vim && make &&\
+
+# Set up neovim
+    mkdir ~/.config &&\
+    ln -s ~/.vim ~/.config/nvim &&\
+    ln -s ~/.vimrc ~/.config/nvim/init.vim
 
 # Expose SSH
 EXPOSE 22
