@@ -74,4 +74,4 @@ EXPOSE 22
 
 # Install the SSH keys of ENV-configured GitHub users before running the SSH
 # server process. See README for SSH instructions.
-CMD /home/dev//ssh_key_adder.rb && sudo /usr/sbin/sshd -D
+CMD /home/dev/ssh_key_adder.rb && sudo /usr/sbin/sshd -D
