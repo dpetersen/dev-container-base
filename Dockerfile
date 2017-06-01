@@ -1,4 +1,4 @@
-FROM ubuntu:15.10
+FROM ubuntu:17.04
 MAINTAINER Don Petersen <don@donpetersen.net>
 
 # Start by changing the apt output, as stolen from Discourse's Dockerfiles.
@@ -20,9 +20,7 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
     echo "host_list=(dev)" >> /usr/local/etc/wemux.conf &&\
 
 # Install neovim
-    add-apt-repository ppa:neovim-ppa/unstable &&\
-    apt-get update &&\
-    apt-get install neovim &&\
+    apt-get install -y neovim &&\
 
 # Install Homesick, through which zsh and vim configurations will be installed
     apt-get install -y ruby &&\
@@ -47,7 +45,9 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
 
 # Fix for occasional errors in perl stuff (git, ack) saying that locale vars
 # aren't set.
-    locale-gen en_US en_US.UTF-8 && dpkg-reconfigure locales
+    apt-get install -y locales &&\
+    locale-gen --purge en_US.UTF-8 &&\
+    update-locale LANG=en_US.UTF-8
 
 RUN useradd dev -d /home/dev -m -s /bin/zsh &&\
     adduser dev sudo && \
