@@ -23,18 +23,18 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
 
 # Install Homesick, through which zsh and vim configurations will be installed
     apt-get install -y ruby &&\
-    gem install homesick --no-rdoc --no-ri &&\
+    gem install homesick --no-document &&\
 
 # Install the Github Auth gem, which will be used to get SSH keys from GitHub
 # to authorize users for SSH
-    gem install github-auth --no-rdoc --no-ri &&\
+    gem install github-auth --no-document &&\
 
 # Install zsh
     apt-get install -y zsh &&\
 
 # Install a couple of helpful utilities
     apt-get install -y ack-grep &&\
-    gem install git-duet --no-rdoc --no-ri &&\
+    gem install git-duet --no-document &&\
 
 # Set up SSH. We set up SSH forwarding so that transactions like git pushes
 # from the container happen magically.
