@@ -6,6 +6,9 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
 # Probably a good idea
     apt-get update &&\
 
+# Nobody is happy when these aren't up-to-date
+    apt-get install -y ca-certificates &&\
+
 # Basic dev tools
     apt-get install -y sudo openssh-client git build-essential vim ctags man curl direnv software-properties-common &&\
 
