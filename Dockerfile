@@ -10,7 +10,7 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
     apt-get install -y ca-certificates &&\
 
 # Basic dev tools
-    apt-get install -y sudo openssh-client git build-essential vim ctags man curl direnv software-properties-common &&\
+    apt-get install -y sudo openssh-client git build-essential ctags man curl direnv software-properties-common &&\
 
 # Set up for pairing with wemux.
     apt-get install -y tmux &&\
@@ -65,12 +65,7 @@ RUN \
 # Set up The Editor of the Gods
     homesick clone dpetersen/vimfiles &&\
     homesick symlink vimfiles &&\
-    cd ~/.vim/bundle_storage/vimproc.vim && make &&\
-
-# Set up neovim
-    mkdir ~/.config &&\
-    ln -s ~/.vim ~/.config/nvim &&\
-    ln -s ~/.vimrc ~/.config/nvim/init.vim
+    cd ~/.vim/bundle_storage/vimproc.vim && make
 
 # Expose SSH
 EXPOSE 22
