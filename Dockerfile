@@ -1,4 +1,4 @@
-FROM ubuntu:17.04
+FROM ubuntu:18.04
 MAINTAINER Don Petersen <don@donpetersen.net>
 
 # Start by changing the apt output, as stolen from Discourse's Dockerfiles.
@@ -8,7 +8,7 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
 # Nobody is happy when these aren't up-to-date
     apt-get install -y ca-certificates &&\
 # Basic dev tools
-    apt-get install -y sudo openssh-client git build-essential ctags man curl direnv software-properties-common &&\
+    apt-get install -y openssh-client git build-essential ctags man curl direnv software-properties-common &&\
 # Set up for pairing with wemux.
     apt-get install -y tmux &&\
     git clone git://github.com/zolrath/wemux.git /usr/local/share/wemux &&\
@@ -33,13 +33,19 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
     apt-get install -y openssh-server &&\
     mkdir /var/run/sshd &&\
     echo "AllowAgentForwarding yes" >> /etc/ssh/sshd_config &&\
+# Install fzf
+    wget https://github.com/junegunn/fzf-bin/releases/download/0.17.4/fzf-0.17.4-linux_amd64.tgz && \
+    tar -zxvf fzf-0.17.4-linux_amd64.tgz && \
+    mv fzf /usr/local/bin/fzf && \
+    rm fzf-0.17.4-linux_amd64.tgz && \
 # Fix for occasional errors in perl stuff (git, ack) saying that locale vars
 # aren't set.
     apt-get install -y locales &&\
     locale-gen --purge en_US.UTF-8 &&\
     update-locale LANG=en_US.UTF-8
 
-RUN useradd dev -d /home/dev -m -s /bin/zsh &&\
+RUN apt-get install -y sudo && \
+    useradd dev -d /home/dev -m -s /bin/zsh &&\
     adduser dev sudo && \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
