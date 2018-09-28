@@ -25,9 +25,11 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
     gem install github-auth --no-document &&\
 # Install zsh
     apt-get install -y zsh &&\
-# Install a couple of helpful utilities
+# Install searching tools
     apt-get install -y ack-grep &&\
-    gem install git-duet --no-document &&\
+    curl -LO https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb && \
+    dpkg -i ripgrep_0.10.0_amd64.deb && \
+    rm ripgrep_0.10.0_amd64.deb && \
 # Set up SSH. We set up SSH forwarding so that transactions like git pushes
 # from the container happen magically.
     apt-get install -y openssh-server &&\
@@ -38,6 +40,11 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
     tar -zxvf fzf-0.17.4-linux_amd64.tgz && \
     mv fzf /usr/local/bin/fzf && \
     rm fzf-0.17.4-linux_amd64.tgz && \
+# Install exa
+    wget https://github.com/ogham/exa/releases/download/v0.8.0/exa-linux-x86_64-0.8.0.zip && \
+    unzip exa-linux-x86_64-0.8.0.zip && \
+    mv exa-linux-x86_64 /usr/local/bin/exa && \
+    rm exa-linux-x86_64-0.8.0.zip && \
 # Fix for occasional errors in perl stuff (git, ack) saying that locale vars
 # aren't set.
     apt-get install -y locales &&\
@@ -59,8 +66,8 @@ RUN \
     homesick symlink zshfiles &&\
 # Set up The Editor of the Gods
     homesick clone dpetersen/vimfiles &&\
-    homesick symlink vimfiles &&\
-    cd ~/.vim/bundle_storage/vimproc.vim && make
+    homesick symlink vimfiles && \
+    vim +PlugInstall +qall
 
 # Expose SSH
 EXPOSE 22
